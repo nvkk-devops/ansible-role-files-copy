@@ -1,0 +1,23 @@
+---
+# Upload Files : Fetch + Upload
+
+- name: Fetch file
+  fetch:
+    src: "{{ item.source_dir }}/{{ item.source_file_name }}.{{ item.file_extension }}"
+    dest: "/tmp/fetched-{{ item.source_file_name }}.{{ item.file_extension }}"
+    flat: yes
+  become_user: "{{ sudo_as_user }}"
+  become_method: "su"
+  become: true
+  with_items: "{{ upload_files_to_repo }}"
+  when: "{{ upload_files_to_repo }}"
+
+- name: Upload Files
+  local_action: "ansible.builtin.shell curl -u {{ repo_login }}:{{ repo_password }} -F 'raw.directory={{ item.repository_dir }}' -F 'raw.asset1=@/tmp/fetched-{{ item.source_file_name }}.{{ item.file_extension }}' -F 'raw.asset1.filename={{ item.source_file_name }}.{{ item.file_extension }}' -X POST {{ item.repository_url }}{{ item.repository_name }}"
+  # ansible.builtin.shell: "curl -u {{ repo_login }}:{{ repo_password }} -F 'raw.directory={{ item.repository_dir }}' -F 'raw.asset1=@/tmp/fetched-{{ item.source_file_name }}.{{ item.file_extension }}' -F 'raw.asset1.filename={{ item.source_file_name }}.{{ item.file_extension }}' -X POST {{ item.repository_url }}{{ item.repository_name }}"
+  # args:
+  #   warn: no
+  # delegate_to: 127.0.0.1
+  run_once: false
+  with_items: "{{ upload_files_to_repo }}"
+  when: "{{ upload_files_to_repo }}"

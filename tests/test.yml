@@ -1,0 +1,5 @@
+---
+- hosts: ci
+  remote_user: root
+  roles:
+    - ansible-role-files-copy

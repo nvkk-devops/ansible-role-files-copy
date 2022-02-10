@@ -1,0 +1,11 @@
+---
+# tasks file for ansible-role-files-copy
+- name: Copy Files
+  include: copy-files.yml
+  tags:
+    - copy
+
+- name: Upload Files
+  include: upload-files.yml
+  tags:
+    - upload

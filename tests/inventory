@@ -1,0 +1,7 @@
+[ci]
+localhost
+
+[ci:vars]
+ansible_port=22 
+
+

@@ -1,0 +1,18 @@
+sudo_as_user: userid
+
+download_files_from_repo:
+  - repository_url: http://xxxx.nexus.com/repository/raw-artefacts/builds
+    repository_dir: appd-agents
+    file_name: javaagent
+    file_extension: jar
+    dest_dir: /apps/userid/domains/AppDynamics/new_appagent/tmp/
+    dest_file_name: javaagent
+
+upload_files_to_repo:
+  - repository_url: http://xxxx.nexus.com/service/rest/v1/components?repository=
+    repository_name: test-raw-artefacts
+    repository_dir: appd-agents
+    file_name: javaagent
+    file_extension: jar
+    source_dir: /apps/userid/domains/AppDynamics/new_appagent
+    source_file_name: javaagent

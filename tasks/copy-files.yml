@@ -1,0 +1,28 @@
+---
+# Copy Files
+- name: Create folder If not exist
+  file:
+    path: "{{ item.dest_dir }}"
+    state: directory
+    mode: 0777
+    group: "{{ sudo_as_user }}"
+    owner: "{{ sudo_as_user }}"
+  become_user: "{{ sudo_as_user }}"
+  become_method: "su"
+  become: true  
+  with_items: "{{ download_files_from_repo }}"
+  when: "{{ download_files_from_repo }}"
+
+- name: "Download the Files"
+  get_url:
+    url: "{{ item.repository_url }}/{{ item.repository_dir }}/{{ item.file_name }}.{{ item.file_extension }}"
+    dest: "{{ item.dest_dir }}/{{ item.dest_file_name }}.{{ item.file_extension }}"
+    mode: 0777
+    group: "{{ sudo_as_user }}"
+    owner: "{{ sudo_as_user }}"
+    force: yes
+  become_user: "{{ sudo_as_user }}"
+  become_method: "su"
+  become: true
+  with_items: "{{ download_files_from_repo }}"
+  when: "{{ download_files_from_repo }}"
